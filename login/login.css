@@ -1,0 +1,157 @@
+@import url('/PoppinsFont/stylesheet.css');
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(to bottom right, rgb(76, 126, 213),rgb(170, 147, 247));
+    overflow: hidden;
+}
+
+input[type=submit] {
+    text-align: center;
+    
+}
+
+.center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: rgba(255, 255, 255, 0.51);
+    width: 350px;
+    border-radius: 20px;
+    
+}
+
+.center h1 {
+    text-align: center;
+    padding: 0 0 0 0;
+    /*border-bottom: 1px solid black;*/
+}
+
+
+form {
+    padding: 0px 10px 40px 10px;
+}
+
+.animated-border {
+    transition: border-color .5s; 
+}
+
+.animated-border:hover {
+    border-color: blueviolet
+}
+
+
+form .txt_field {
+    position: relative;
+    border-bottom: 2px solid #505050;
+    margin: 20px 20px;
+    padding: 5px;
+}
+
+form .txt_field:focus {
+    background-color: #AAAAAA;
+}
+
+.txt_field input {
+    border: none;
+    width: 100%;
+    background: none;
+    outline: none;
+    padding: 0px 5px ;
+    height: 30px;
+    font-size: 15;
+}
+
+.txt_field input:focus ~ form .txt_field {
+    background-color: #AAAAAA;
+}
+
+.txt_field label {
+    position: absolute;
+    top: 50%;
+    left: 5px;
+    transform: translateY(-50%);
+    font-size: 16px;
+    pointer-events: none;
+    transition: .3s;
+}
+.txt_field span::before {
+    content: '';
+    position: absolute;
+    top: 40px;
+    left: 0px;
+    width: 0%;
+    height: 2px;
+    background: #0b68a5;
+    transition: .5s; 
+}
+
+.txt_field input:focus ~ label,
+.txt_field input:valid ~ label {
+    top: -5px;
+    color: #086eb1;
+}
+
+.txt_field input:focus ~ span::before,
+.txt_field input:valid ~ span::before {
+    width: 100%;
+}
+
+.pass {
+    margin: 30px 23px 10px ; 
+    color: #0b68a5;
+    cursor: pointer;
+}
+
+.pass:hover {
+text-decoration:underline; 
+}
+
+input[type="submit"]{
+    width: 100%; 
+    height: 50px;
+    border: 1px solid;
+    background: #2691d9;
+    border-radius: 20px;
+    font-size: 18px;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.652);
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+}
+
+input[type="sumbit"]:hover{
+    border-color: #2691d9;
+    transition: .5s;
+}
+
+.signaupin_link {
+    margin: 30px 0px;
+    text-align: center;
+    font-size: 16px;
+    color: #666666;
+}
+
+.signaupin_link a {
+    color: #2691d9;
+    text-decoration: underline;
+}
+
+.remember {
+    text-align: center;
+    margin: 10px;
+}
+
+.remember input {
+    outline: none;
+    height: 15px;
+    width: 15px;
+    border-radius: 5px;
+}

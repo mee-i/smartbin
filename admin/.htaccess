@@ -1,0 +1,5 @@
+Require all granted
+
+<FilesMatch "\.(js|css|html)$">
+  Require all denied
+</FilesMatch>

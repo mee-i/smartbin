@@ -1,0 +1,234 @@
+<!-- <!DOCTYPE html>
+<html>
+    <head>
+        <title>SmartBin - Account</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body class="theme-background">
+        <div class="container-flex flex-center">
+            <div id="main" class="login-box container white-background">
+                <form method="post" class="container-flex flex-center flex-column">
+                    <h3 class="logo">SmartBin</h3>
+                    <h2>File Upload</h2>
+                    <div style="padding: 0px;" class="input-container input">
+                      <label id="file-input" for="file">
+                        <span class="select-file">Select file</span>
+                        <span id="filename">No file selected</span>
+                      </label>
+                      <input hidden id="file" type="file" placeholder="Pilih file" />
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">File directory</span>
+                        <br>
+                        <div class="input-container">
+                          <input name="dir" id="dir" type="text">
+                        </div>
+                    </div>
+                    <div class="input-box">
+                        <span class="input-label">Upload key</span>
+                        <br>
+                        <div class="input-container">
+                          <input name="uploadkey" id="upload-key" type="text">
+                        </div>
+                    </div>
+                    <div class="input-container input">
+                      <span id="filesize">File size: 0.00KB</span>
+                      <br>
+                      <span>File size limit: 50 MB</span>
+                    </div>
+                    <div class="input-box">
+                        <input type="button" id="upload" value="          Upload          ">
+                    </div>
+                </form>
+            </div>
+            <div id="loading" hidden class="login-box container white-background">
+              <h3 class="logo">SmartBin</h3>
+                <h2>File Upload</h2>
+              <div id="progress">
+                <br><br>
+                <div class="loading-bar">
+                  <span id="progress-percentage">0%</span>
+                  <br>
+                  <div></div>
+                </div>
+              </div>
+            </div>
+            <div id="success" hidden class="login-box container white-background">
+              <h3 class="logo">SmartBin</h3>
+                    <h2>File Upload</h2>
+              <div id="upload-complete">
+                <br><br>
+                <h1 style="color: green;">File uploaded!</h1>
+                <span id="file-directory"></span>
+                <br><br>
+                <div onclick="location.reload()" class="input-container button" style="color: white; font-weight: bold;">
+                  <span>Upload file lain</span>
+                </div>
+              </div>
+            </div>
+        </div>
+        <script>
+          if (!!window.EventSource) {
+            var source = new EventSource("/events");
+          }
+          function getRandomNum(min, max, float = false) {
+            if(!float) return Math.floor(Math.random() * (max - min + 1) + min);
+            else return Math.random() * (max - min + 1) + min;
+          }
+          var inputFile;
+          var maxFileChunk = 5000;
+          var uploadEnable = false;
+          var chunkSent = 0;
+          
+          var fileChunk = [];
+          var fileSize = 0;
+    
+          var form = document.getElementById("main");
+          
+          var progress = document.getElementById("loading");
+          var progressPercentage = document.getElementById("progress-percentage");
+          var uploadKey = document.getElementById("upload-key");
+          
+          var dir = document.getElementById("dir");
+          
+          /*
+          source.addEventListener("data", function(e) {
+            if (e.data == "start") {
+              progressStart();
+            }
+            else if (e.data == "complete") {
+              if (chunkSent < fileChunk.length) {
+                setTimeout(function() {
+                  var data = new FormData();
+                  data.append("write-mode", "a");
+                  data.append("dir", dir.value);
+                  data.append("data", fileChunk[chunkSent]);
+                  request({
+                    data: data,
+                    type: 'POST',
+                    async: true,
+                    url: '/filemanager/sendfile'
+                  });
+                  //*//*
+                  updateProgressStatus();
+                  chunkSent++;
+                }, 100);
+              }
+              else {
+                progressComplete();
+              }
+            }
+            else if (e.data.startsWith("error")) {
+              progressError(e.data.substring(5));
+            }
+          });
+          */
+          dir.addEventListener("keyup", function() {
+            if (this.value[0] != "/") {
+              this.value = "/" + this.value;
+            }
+            checkUpload();
+            buttonUpdate();
+          });
+          uploadKey.addEventListener("keyup", function() {
+            checkUpload();
+            buttonUpdate();
+          });
+          document.getElementById("file").addEventListener("change", function(event) {
+            inputFile = event.target;
+            fileSize = event.target.files[0].size;
+            document.getElementById("filename").innerHTML = event.target.files[0].name;
+            document.getElementById("filesize").innerHTML = "File size: " + (event.target.files[0].size / 1000).toFixed(2) + "KB";
+            checkUpload();
+            buttonUpdate();
+          });
+          function uploadFile() {
+            var formdata = new FormData();
+            formdata.append("file", inputFile.files[0]);
+            var ajax = new XMLHttpRequest();
+            ajax.upload.addEventListener("progress", updateProgress, false);
+            ajax.addEventListener("load", progressComplete, false); // doesnt appear to ever get called even upon success
+            //ajax.addEventListener("error", errorHandler, false);
+            //ajax.addEventListener("abort", abortHandler, false);
+            ajax.open("POST", "");
+            ajax.send(formdata);
+          }
+          document.getElementById('upload').addEventListener('click', function() { 
+            if (uploadEnable) {
+              //var file = new FileReader(); 
+              //file.onload = function(){
+                //fileChunk = [];
+                //for (let i = 0; i * maxFileChunk - 1 <= inputFile.files[0].size; i++) {
+                //  fileChunk.push(file.result.substring(i * maxFileChunk, (i + 1) * maxFileChunk/* - 1*/));
+                //}
+                //chunkSent = 0;
+                // var data = new FormData();
+                //data.append("data", fileChunk[chunkSent]);
+                // data.append("dir", dir.value);
+                //data.append("ID", ID);
+                // request({
+                //   data: data,
+                //   type: 'POST',
+                //   async: true,
+                //   url: '/filemanager/sendfile'
+                // });
+                //*/
+                //updateProgress();
+                // chunkSent++;
+                //console.log(file.result);
+                form.hidden = true;
+                progress.hidden = false;
+                progressStart();
+                setTimeout(uploadFile, 1000);
+              //}
+              //file.readAsText(inputFile.files[0]);
+            }
+          });
+          
+          function progressStart() {
+            // progressStatus.innerHTML = "Mengupload file...";
+          }
+          
+          function progressComplete() {
+            progress.hidden = true;
+            document.getElementById("file-directory").innerHTML = `Directory: ${dir.value}`;
+            document.getElementById("main").hidden = true;
+            document.getElementById("success").hidden = false;
+          }
+          
+          function checkUpload() {
+            if (inputFile != undefined && inputFile.files[0].size > 50000000) {
+              uploadEnable = false;
+              document.getElementById("filesize").style.color = "red";
+            }
+            else if (inputFile != undefined && dir.value != "" && uploadKey.value != "") {
+              uploadEnable = true;
+              document.getElementById("filesize").style.color = "black";
+            }
+            else {
+              uploadEnable = false;
+              document.getElementById("filesize").style.color = "black";
+            }
+          }
+          
+          function buttonUpdate() {
+            if (uploadEnable) {
+              document.getElementById("upload").disabled = false;
+            }
+            else {
+              document.getElementById("upload").disabled = true;
+            }
+          }
+          function updateProgress(event) {
+            progressPercentage.innerHTML = Math.round((event.loaded / event.total) * 100) + "%";
+          }
+          function progressError(errorCode) {
+            if (errorCode == "20") {
+              
+            }
+          }
+          buttonUpdate();
+        </script>
+    </body>
+</html> -->

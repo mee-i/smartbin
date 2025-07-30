@@ -1,0 +1,17 @@
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes meter-animate {
+    0% {
+        width: 0;
+    }
+    /* 100% {
+        width: auto;
+    } */
+}
