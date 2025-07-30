@@ -1,6 +1,6 @@
 # SmartBin  
 
-## Note: this code is from 2024, This code may contain bugs or vulnerabilities.
+## Note: this code is from 2023, This code may contain bugs or vulnerabilities.
 SmartBin is an **innovative smart trash bin** designed to automatically detect whether waste is **organic** or **inorganic**. This project is part of a **P5 initiative**, aiming to promote smart waste management using sensor technology.  
 
 ## ✨ Features  
